@@ -145,18 +145,6 @@
 		/* margin: 0 auto; */
 	}
 
-	/* .interactable {
-		cursor: pointer;
-
-		filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.666));
-	}
-	.interactable:hover {
-		filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.5)) saturate(1.1) brightness(1.1);
-
-		transition: all 0.333s ease-in-out;
-		transform: scale(1.05);
-	} */
-
 
 	#image-processing-window {
 		/* padding: var(--j);
@@ -225,6 +213,7 @@
 		/* height: calc(var(--j) * 4); */
 
         background-image: var(--css-image);
+		/* filter: saturate(1.5); */
         
         /* --gradient-radial: radial-gradient(circle, rgba(0,0,0,0.333) 0%, rgba(0,0,0,0) 133%);
         -webkit-mask-image: var(--gradient-radial);
