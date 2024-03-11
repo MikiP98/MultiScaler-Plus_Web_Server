@@ -17,6 +17,10 @@ body {
 
 	background-attachment: fixed;
 
+	--font-color-1: rgb(176, 176, 208);
+	
+	  
+
 	/* background-color: hsl(209, 36%, 86%);
 	background-size: 100vw 100vh;
 	background-image:  */
@@ -37,6 +41,14 @@ body {
 	background-size: 100% 100%;
 	background-position: 0px 0px,0px 0px;
 	background-image: linear-gradient(20deg, #00001488 0%, #000014 0%, #00142888 70%, #7F400088 100%),linear-gradient(301deg, #112700FF 0%, #400072FF 100%);
+
+	color: var(--font-color-1); /* Fixes css '--fons-color-1' variable, not existing in <a> */
+}
+
+body a:link, body a:visited {
+	color: var(--font-color-1);
+	background-color: transparent;
+	text-decoration: none;
 }
 
 /* .app, :global(.app) {

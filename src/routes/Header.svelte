@@ -124,7 +124,7 @@
 		min-width: 0;
 		min-height: 0;
 
-		--font-color-1: rgb(176, 176, 208);
+		
 
 		--j: calc(100vh / 18);
 	}
@@ -416,6 +416,11 @@
 		text-decoration: none;
 		font-size: calc(var(--j)/1.666);
 	}
+	/* a:link {
+		color: var(--font-color-1);
+		background-color: transparent;
+		text-decoration: none;
+	} */
 	@media only screen and (max-height: 1000px) {
 		nav li, :global(nav li), nav span, :global(nav span) {
 			font-size: calc(var(--j)/2.22);
