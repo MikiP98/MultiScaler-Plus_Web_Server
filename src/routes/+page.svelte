@@ -3,6 +3,12 @@
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
 
+	// import Header from './Header.svelte';
+	// import { setContext } from 'svelte';
+	// import { writable } from 'svelte/store';
+	import { onMount } from 'svelte';
+	import { handleSubmitStore } from './store';
+
 	let formData = {
     	// your form data properties
 		scale: 2,
@@ -12,13 +18,17 @@
 		algorithm: "none"
 	};
 
-	function handleSubmit(event) {		
+	// export function handleSubmit(event) {
+	export let handleSubmit = (event) => {
 		// // Your form submission logic goes here
 
 		// // For example, you can send the form data to an API
 		// // or perform any other asynchronous operation.
 		console.log("Form submitted!", formData);
 	}
+	onMount(() => {
+		handleSubmitStore.set(handleSubmit);
+	});
 
 	function handleScaleXYChange(event) {
 		console.log("Scale changed!", event.target.value);

@@ -7,6 +7,11 @@
 	import cog from '$lib/images/cog.png';
 	import loading from '$lib/images/loading.png';
 
+	// import page_scaling from './+page.svelte';
+	// import { getContext } from 'svelte';
+	import { onMount } from 'svelte';
+	import { handleSubmitStore } from './store';
+
 	let image = "https://www.w3schools.com/w3images/lights.jpg";
 
     function handleFileSelect(evt) {
@@ -32,11 +37,29 @@
         handleFileSelect(event);
     }
 
+	let handleSubmit;
+	onMount(() => {
+		const unsubscribe = handleSubmitStore.subscribe((value) => {
+			handleSubmit = value;
+		});
+
+		// Cleanup the subscription when the component is destroyed
+		return () => {
+			unsubscribe();
+		};
+	});
 	function handleScaling(event) {
 		console.log("Scaling");
+		
+		// Run function from +page.svelte
+		if (handleSubmit) {
+			handleSubmit(event);
+		} else {
+			console.error("No handleSubmit function found");
+		}
 	}
 
-	function handleOutputToIntput(event) {
+	function handleOutputToInput(event) {
 		console.log("Output to input");
 	}
 </script>
@@ -87,7 +110,7 @@
 
 			<div id="arrows">
 				<button class="interactable" on:click={handleScaling}>→</button>
-				<button class="interactable" on:click={handleOutputToIntput}>←</button>
+				<button class="interactable" on:click={handleOutputToInput}>←</button>
 			</div>
 
 			<div id="settings">
