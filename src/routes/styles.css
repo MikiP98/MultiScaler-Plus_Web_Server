@@ -1,0 +1,49 @@
+/* @import '@fontsource/fira-mono'; */
+
+/* *, :global(*), body, :global(body), :root {
+	margin: 0;
+	padding: 0;
+	min-width: 0;
+	min-height: 0;
+
+	--font-color-1: rgb(176, 176, 208);
+
+	--j: calc(100vh / 18);
+} */
+
+body {
+	min-height: 100vh;
+	margin: 0;
+
+	background-attachment: fixed;
+
+	/* background-color: hsl(209, 36%, 86%);
+	background-size: 100vw 100vh;
+	background-image:  */
+		/* radial-gradient(
+			50% 50% at 50% 50%,
+			rgba(255, 255, 255, 0.75) 0%,
+			rgba(255, 255, 255, 0) 100%
+		), */
+		/* radial-gradient(
+			50% 50% at 50% 50%,
+			rgb(0, 0, 20) 0%,
+			rgb(20, 0, 40) 100%
+		), */
+		/* linear-gradient(50% 50% at 50% 50%, 0deg, rgb(0, 0, 20) 0%, rgb(20, 0, 40) 100%), */
+		/* linear-gradient(20deg, rgb(0, 0, 20) 0%, rgb(0, 20, 40) 75%, rgb(127.5, 64, 0) 120%)
+	; */
+	
+	background-size: 100% 100%;
+	background-position: 0px 0px,0px 0px;
+	background-image: linear-gradient(20deg, #00001488 0%, #000014 0%, #00142888 70%, #7F400088 100%),linear-gradient(301deg, #112700FF 0%, #400072FF 100%);
+}
+
+/* .app, :global(.app) {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	/* min-height: 100vh; 
+} */
