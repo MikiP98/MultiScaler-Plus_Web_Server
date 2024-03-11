@@ -47,17 +47,20 @@
 	.left {
 		text-align: left;
 		/* font-size: small; */
+		font-size: calc(var(--j) / 5);
 	}
 
 	.right {
 		text-align: right;
 		/* font-size: small; */
+		font-size: calc(var(--j) / 5);
 	}
 
 	.long {
 		grid-column: 1 / -1;
 
 		text-align: left;
-		font-size: xx-small;
+		/* font-size: xx-small; */
+		font-size: calc(var(--j) / 10);
 	}
 </style>

@@ -110,7 +110,7 @@
 	}
 	@media only screen and (max-height: 1000px) {
 		section {
-			height: calc(var(--j) * 3);
+			height: calc(var(--j) * 3.3333);
 		}
 	}
 

@@ -242,6 +242,11 @@
 		display: grid;
 		grid-template-rows: auto var(--j);
     }
+	@media only screen and (max-height: 1000px) {
+		.blur {
+			grid-template-rows: auto calc(var(--j) * 0.6666);
+		}
+	}
 	.visible-image {
 		/* position: relative;
 		top: calc(var(--j) * -5); */
@@ -266,13 +271,20 @@
 		/* position: relative;
 		top: calc(var(--j) * -1); */
 
-        width: calc(var(--j) * 5);
-		height: var(--j);
+        /* width: calc(var(--j) * 5);
+		height: var(--j); */
+		width: 100%;
+		height: 100%;
 
 		/* background-color: rgba(255, 255, 255, 0.25); */
 		background: linear-gradient(0deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.25) 90%, rgba(255,255,255,0.2) 95%, rgba(255,255,255,0) 100%);
 		/* z-index: 1; */
     }
+	/* @media only screen and (max-height: 1000px) {
+		#controls {
+			height: calc(var(--j) * 0.6666);
+		}
+	} */
 
 	#output-info-text {
 		grid-area: 1 / 4;
@@ -370,6 +382,15 @@
 
 		display: grid;
 		grid-template-columns: auto var(--j);
+
+		--font-color-1: var(--font-color-1);
+	}
+	@media only screen and (max-height: 1000px) {
+		nav, :global(nav) {
+			height: calc(var(--j) * 0.6666);
+
+			grid-template-columns: auto calc(var(--j) * 0.6666);
+		}
 	}
 	ul, :global(ul) {
 		height: 100%;
@@ -393,6 +414,12 @@
 
 		color: var(--font-color-1);
 		text-decoration: none;
+		font-size: calc(var(--j)/1.666);
+	}
+	@media only screen and (max-height: 1000px) {
+		nav li, :global(nav li), nav span, :global(nav span) {
+			font-size: calc(var(--j)/2.22);
+		}
 	}
 	.selected {
 		background-color: rgba(10, 20, 30, 0.5);
