@@ -12,7 +12,7 @@
 	import { onMount } from 'svelte';
 	import { handleSubmitStore } from './store';
 
-	let image = "https://www.w3schools.com/w3images/lights.jpg";
+	// let image = "https://www.w3schools.com/w3images/lights.jpg";
 
     function handleFileSelect(evt) {
         const files = evt.target.files;
@@ -31,6 +31,7 @@
     }
 
     let imageUrl = "";
+	let imageOutputUrl = "";
 
     function onFileInputChange(event) {
 		console.log("File input changed");
@@ -82,27 +83,52 @@
 						</div>
 						
 						<div id="controls">
-							<p>Controls</p>
+							<span>
+								XXX%
+							</span>
+							<span>
+								<button>+</button>
+								<button>-</button>
+							</span>
+							<span>
+								<input id="preview-mode" name="preview-mode" type="checkbox">
+								<label for="preview-mode">preview mode</label>
+							</span>
+							<span>
+								<button>
+									X
+									<!-- <img src={trash-can} /> -->
+								</button>
+							</span>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<h1 id="output-info-text">Output</h1>
-			<div class="image-container-output" style="--css-image: url({imageUrl});">
+			<div class="image-container-output" style="--css-image: url({imageOutputUrl});">
 				<div class="background-image-bloom">
 					<div class="blur">
 						<div class="visible-image">
-							{#if !imageUrl}
+							{#if !imageOutputUrl}
 								<img src={loading} alt="loading circle" id="loading-circle">
 							{/if}
-							{#if imageUrl}
-								<img src={imageUrl} alt="Selected Image" width="200px" />
+							{#if imageOutputUrl}
+								<img src={imageOutputUrl} alt="Selected Image" width="200px" />
 							{/if}
 						</div>
 						
 						<div id="controls">
-							<p>Controls</p>
+							<span>
+								XXX%
+							</span>
+							<span>
+								<button>+</button>
+								<button>-</button>
+							</span>
+							<span>
+								<button>↓</button>
+							</span>
 						</div>
 					</div>
 				</div>
@@ -113,9 +139,9 @@
 				<button class="interactable" on:click={handleOutputToInput}>←</button>
 			</div>
 
-			<div id="settings">
+			<button id="settings">
 				<img src={cog} alt="Setting cog" class="interactable" />
-			</div>
+			</button>
 
 		</div>
 		<nav>
@@ -147,11 +173,9 @@
 		min-width: 0;
 		min-height: 0;
 
-		
-
-		--j: calc(100vh / 18);
+		--j: calc(100vh / 17);
 	}
-	@media only screen and (max-height: 1000px) {
+	@media only screen and (max-height: 1080px) {
 		*, :global(*), header, :global(header) {
 			--j: calc(100vh / 12);
 		}
@@ -265,7 +289,7 @@
 		display: grid;
 		grid-template-rows: auto var(--j);
     }
-	@media only screen and (max-height: 1000px) {
+	@media only screen and (max-height: 1440px) {
 		.blur {
 			grid-template-rows: auto calc(var(--j) * 0.6666);
 		}
@@ -302,6 +326,10 @@
 		/* background-color: rgba(255, 255, 255, 0.25); */
 		background: linear-gradient(0deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.25) 90%, rgba(255,255,255,0.2) 95%, rgba(255,255,255,0) 100%);
 		/* z-index: 1; */
+
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
     }
 	/* @media only screen and (max-height: 1000px) {
 		#controls {
@@ -385,6 +413,9 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+
+		background-color: transparent;
+		border: none;
 	}
 	#settings img {
 		width: 80%;
@@ -408,7 +439,7 @@
 
 		--font-color-1: var(--font-color-1);
 	}
-	@media only screen and (max-height: 1000px) {
+	@media only screen and (max-height: 1440px) {
 		nav, :global(nav) {
 			height: calc(var(--j) * 0.6666);
 
@@ -444,7 +475,7 @@
 		background-color: transparent;
 		text-decoration: none;
 	} */
-	@media only screen and (max-height: 1000px) {
+	@media only screen and (max-height: 1440px) {
 		nav li, :global(nav li), nav span, :global(nav span) {
 			font-size: calc(var(--j)/2.22);
 		}

@@ -31,6 +31,11 @@
 
 		color: var(--font-color-1);
 	}
+	@media only screen and (max-height: 1440px) {
+		footer, :global(footer) {
+			height: calc(var(--j) * 0.6666);
+		}
+	}
 
 	.center-on-site {
 		width: calc(var(--j) * 14);

@@ -116,9 +116,14 @@
 		align-items: center;
 		justify-content: center;
 
-		height: calc(var(--j) * 9);
+		height: calc(var(--j) * 8);
 	}
-	@media only screen and (max-height: 1000px) {
+	@media only screen and (max-height: 1440px) {
+		section {
+			height: calc(var(--j) * 8.6666);
+		}
+	}
+	@media only screen and (max-height: 1080px) {
 		section {
 			height: calc(var(--j) * 3.3333);
 		}
