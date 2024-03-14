@@ -8,7 +8,9 @@
 	// import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
 	import { handleSubmitStore } from './store';
-
+	export let imgUrl;
+	let Result = null
+	let scaleOpt = ''
 	let formData = {
     	// your form data properties
 		scale: 2,
@@ -42,6 +44,17 @@
 			console.log("Same scale");
 			formData.scale = formData.scaleX;
 		}
+	}
+	async function Post(){
+		const res = await fetch('do wstawienia',{
+			method: 'POST',
+			body: JSON.stringify({
+				{imgUrl},
+				scaleOpt
+			})
+		})
+		const json = await res.json()
+		console.log(JSON.stringify(json))
 	}
 </script>
 
@@ -88,7 +101,7 @@
 			</div>
 
 			<label for="algorithm">Algorithm:</label>
-			<select id="algorithm" name="algorithm">
+			<select id="algorithm" name="algorithm" bind:value={scaleOpt}>
 				<option value="none">None</option>
 				<option value="nearest-neighbor">Nearest Neighbor</option>
 				<option value="bilinear">Bilinear</option>
@@ -96,7 +109,7 @@
 				<option value="lanczos">Lanczos</option>
 			</select>
 
-			<button type="submit">Scale</button>
+			<button type="submit" on:click={Post}>Scale</button>
 
 			<!-- <label for="name">Name:</label>
 			<input type="text" id="name" name="name" required />

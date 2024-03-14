@@ -11,7 +11,7 @@
 	// import { getContext } from 'svelte';
 	import { onMount } from 'svelte';
 	import { handleSubmitStore } from './store';
-
+	import Page from './+page.svelte'
 	// let image = "https://www.w3schools.com/w3images/lights.jpg";
 
     function handleFileSelect(evt) {
@@ -63,9 +63,14 @@
 	function handleOutputToInput(event) {
 		console.log("Output to input");
 	}
+	const fetchImage = (async () => {
+		const response = await fetch('scaled image url')
+    return await response.json()
+	})
 </script>
 
 <header>
+	<Page imgUrl= {imageUrl}/>
 	<div class="center-on-site">
 		<div id="image-processing-window">
 
