@@ -27,6 +27,8 @@
 		// // For example, you can send the form data to an API
 		// // or perform any other asynchronous operation.
 		console.log("Form submitted!", formData);
+
+		Post();
 	}
 	onMount(() => {
 		handleSubmitStore.set(handleSubmit);
@@ -49,7 +51,7 @@
 		const res = await fetch('do wstawienia',{
 			method: 'POST',
 			body: JSON.stringify({
-				{imgUrl},
+				// {imgUrl},
 				scaleOpt
 			})
 		})
@@ -109,7 +111,7 @@
 				<option value="lanczos">Lanczos</option>
 			</select>
 
-			<button type="submit" on:click={Post}>Scale</button>
+			<button type="submit">Scale</button>
 
 			<!-- <label for="name">Name:</label>
 			<input type="text" id="name" name="name" required />

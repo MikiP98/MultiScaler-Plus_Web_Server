@@ -70,7 +70,7 @@
 </script>
 
 <header>
-	<Page imgUrl= {imageUrl}/>
+	<!-- <Page imgUrl= {imageUrl}/> -->
 	<div class="center-on-site">
 		<div id="image-processing-window">
 
