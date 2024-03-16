@@ -471,6 +471,7 @@
 		justify-content: center;
 		align-items: center;
 
+		font-family: 'Courier New', Courier, monospace;
 		color: var(--font-color-1);
 		text-decoration: none;
 		font-size: calc(var(--j)/1.666);

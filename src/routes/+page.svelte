@@ -10,7 +10,7 @@
 	import { handleSubmitStore } from './store';
 	export let imgUrl;
 	let Result = null
-	let scaleOpt = ''
+	let algorithm = '-- SELECT --'
 	let formData = {
     	// your form data properties
 		scale: 2,
@@ -52,7 +52,7 @@
 			method: 'POST',
 			body: JSON.stringify({
 				// {imgUrl},
-				scaleOpt
+				algorithm
 			})
 		})
 		const json = await res.json()
@@ -82,34 +82,41 @@
 				<label for="preset">Preset:</label>
 				<select id="preset" name="preset">
 					<option value="none">None</option>
-					<option value="pixel-art">Pixel Art</option>
+					<option value="photo-realism">Photo Realism</option>
 					<option value="de-jpeg">De JPEG</option>
+					<option value="pixel-art">Pixel Art</option>
 				</select>
 			</div>
 
 			<div id="scale-box">
 				<label for="scale">Scale:</label>
+
 				<input type="number" id="scale" name="scale" min="0" bind:value={formData.scale} required />
 
 				<div id="scale-split">
-					<label for="scale-x">X:</label>
-					<input type="number" id="scale-x" name="scale-x" min="0" bind:value={formData.scaleX} on:change={handleScaleXYChange} required />
+					<span>
+						<label for="scale-x">X:</label>
+						<input type="number" id="scale-x" name="scale-x" min="0" bind:value={formData.scaleX} on:change={handleScaleXYChange} required />
+					</span>
 
 					<input type="checkbox" id="scale-x-y-connect" name="scale-x-y-connect" bind:checked={formData.isScaleXYConnected} />
 
-					<label for="scale-y">Y:</label>
-					<input type="number" id="scale-y" name="scale-y" min="0" bind:value={formData.scaleY} on:change={handleScaleXYChange} required />
+					<span>
+						<label for="scale-y">Y:</label>
+						<input type="number" id="scale-y" name="scale-y" min="0" bind:value={formData.scaleY} on:change={handleScaleXYChange} required />
+					</span>
 				</div>
 			</div>
 
 			<label for="algorithm">Algorithm:</label>
-			<select id="algorithm" name="algorithm" bind:value={scaleOpt}>
+			<!-- <select id="algorithm" name="algorithm" bind:value={algorithm}>
 				<option value="none">None</option>
 				<option value="nearest-neighbor">Nearest Neighbor</option>
 				<option value="bilinear">Bilinear</option>
 				<option value="bicubic">Bicubic</option>
 				<option value="lanczos">Lanczos</option>
-			</select>
+			</select> -->
+			<select id="algorithm" name="algorithm" bind:value={algorithm}></select>
 
 			<button type="submit">Scale</button>
 
@@ -152,18 +159,24 @@
 	}
 
 	form {
-		display: grid;
-		width: 50%;
-		grid-template-columns: repeat(2, 1fr);
+		width: 100%;
+		height: 100%;
+
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		/* justify-content: space-around; */
+		
+		/* grid-template-columns: repeat(2, 1fr); */
 		/* grid-template-rows: repeat(3, auto); */
-		gap: 1em;
+		/* gap: 1em; */
 
 		color: var(--font-color-1);
 	}
 	form div {
 		display: flex;
 		flex-direction: row;
-		justify-content: space-around;
+		/* justify-content: space-between; */
 	}
 
 	form input, form textarea {
@@ -177,13 +190,31 @@
 		color: var(--font-color-1);
 	}
 
+	#scale-box {
+		width: fit-content;
+
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+
+		border: 1px solid var(--font-color-1);
+
+		transition: all 0.2s;
+	}
+	#scale-box input {
+		width: calc(var(--j) / 1.5);
+	}
 	#scale-split {
-		visibility: hidden;
+		display: none;
+		/* visibility: hidden; */
 	}
 	#scale-box:hover #scale-split {
-		visibility: visible;
+		display: flex;
+		flex-direction: column;
 	}
 	#scale-box:hover #scale {
-		visibility: hidden;
+		display: none;
+		/* visibility: hidden; */
 	}
 </style>
