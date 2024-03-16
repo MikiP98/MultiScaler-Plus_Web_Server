@@ -10,7 +10,7 @@
 	import { handleSubmitStore } from './store';
 	export let imgUrl;
 	let Result = null
-	let algorithm = '-- SELECT --'
+	let algorithm = ''
 	let formData = {
     	// your form data properties
 		scale: 2,
@@ -57,6 +57,14 @@
 		})
 		const json = await res.json()
 		console.log(JSON.stringify(json))
+	}
+
+	const classicOptions = ["Bilinear", "Bicubic", "Lanczos", "Nearest Neighbor"];
+	const edgeDetectionOptions = ["xBRZ"];
+	const AIOptions = ["ESRGAN", "SUPIR"];
+
+	function selectOption(option) {
+		algorithm = option;
 	}
 </script>
 
@@ -108,15 +116,41 @@
 				</div>
 			</div>
 
-			<label for="algorithm">Algorithm:</label>
-			<!-- <select id="algorithm" name="algorithm" bind:value={algorithm}>
-				<option value="none">None</option>
-				<option value="nearest-neighbor">Nearest Neighbor</option>
-				<option value="bilinear">Bilinear</option>
-				<option value="bicubic">Bicubic</option>
-				<option value="lanczos">Lanczos</option>
-			</select> -->
-			<select id="algorithm" name="algorithm" bind:value={algorithm}></select>
+			<div id="algorithm">
+				<div>
+					<label for="algorithm">Algorithm:</label>
+					<!-- <select id="algorithm" name="algorithm" bind:value={algorithm}>
+						<option value="none">None</option>
+						<option value="nearest-neighbor">Nearest Neighbor</option>
+						<option value="bilinear">Bilinear</option>
+						<option value="bicubic">Bicubic</option>
+						<option value="lanczos">Lanczos</option>
+					</select> -->
+					<input type="text" placeholder="Select algorithm" bind:value={algorithm} readonly />
+				</div>
+				<div class="custom-dropdown">
+					<div class="dropdown-options">
+						<div class="option-group">
+							<span class="group-heading">-- Classic --</span>
+							{#each classicOptions as option}
+								<div class="option" on:click={() => selectOption(option)}>{option}</div>
+							{/each}
+						</div>
+						<div class="option-group">
+							<span class="group-heading">-- Edge detection --</span>
+							{#each edgeDetectionOptions as option}
+								<div class="option" on:click={() => selectOption(option)}>{option}</div>
+							{/each}
+						</div>
+						<div class="option-group">
+							<span class="group-heading">-- AI --</span>
+							{#each AIOptions as option}
+								<div class="option" on:click={() => selectOption(option)}>{option}</div>
+							{/each}
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<button type="submit">Scale</button>
 
@@ -173,6 +207,15 @@
 
 		color: var(--font-color-1);
 	}
+	form * {
+		border-radius: 1px;
+
+		padding: calc(var(--j) / 32 + 2px);
+
+		font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+		color: var(--font-color-1);
+		font-size: calc(var(--j) / 4.5);
+	}
 	form div {
 		display: flex;
 		flex-direction: row;
@@ -183,11 +226,13 @@
 		background-color: rgb(79, 79, 89);
 		border: none;
 		/* border-radius: calc(var(--j) / 32); */
-		border-radius: 2px;
+		/* border-radius: 1px;
 
 		padding: calc(var(--j) / 24 + 2px);
 
-		color: var(--font-color-1);
+		color: var(--font-color-1); */
+
+		font-size: calc(var(--j) / 5); 
 	}
 
 	#scale-box {
@@ -212,9 +257,73 @@
 	#scale-box:hover #scale-split {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 	}
 	#scale-box:hover #scale {
 		display: none;
 		/* visibility: hidden; */
+	}
+
+	#algorithm {
+		width: calc(var(--j) * 6);
+		max-height: calc(var(--j) * 4);
+
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+
+		border: 1px solid var(--font-color-1);
+
+		transition: all 0.2s;
+	}
+
+	.custom-dropdown {
+		/* position: relative; */
+		display: none;
+	}
+	#algorithm:hover .custom-dropdown{
+		display: initial;
+		/* display: inline-block; */
+	}
+
+	.dropdown-options {
+		/* position: absolute; */
+		/* top: 100%;
+		left: 0;
+		z-index: 1000; */
+		background-color: #fff;
+		border: 1px solid #ccc;
+		border-top: none;
+		/* width: auto; */
+		width: 100%;
+
+		display: flex;
+		flex-direction: column;
+
+		overflow: scroll;
+	}
+
+	.option-group {
+		padding: 5px 10px;
+		border-bottom: 1px solid #ccc;
+
+		display: flex;
+		flex-direction: column;
+
+		overflow: scroll;
+	}
+
+	.group-heading {
+		font-weight: bold;
+	}
+
+	.option {
+		padding: 5px 10px;
+		cursor: pointer;
+	}
+
+	.option:hover {
+		background-color: #f0f0f0;
 	}
 </style>

@@ -472,9 +472,15 @@
 		align-items: center;
 
 		font-family: 'Courier New', Courier, monospace;
+		/* font-weight: 600; */
 		color: var(--font-color-1);
 		text-decoration: none;
 		font-size: calc(var(--j)/1.666);
+
+		/* filter: drop-shadow(0 0 30px var(--font-color-1)); */
+	}
+	nav li a, :global(nav li a), nav span a, :global(nav span a) {
+		filter: drop-shadow(0 0 6px rgba(0, 0, 0, 1));
 	}
 	/* a:link {
 		color: var(--font-color-1);
