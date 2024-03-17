@@ -61,6 +61,7 @@
 
 	const classicOptions = ["Bilinear", "Bicubic", "Lanczos", "Nearest Neighbor"];
 	const edgeDetectionOptions = ["xBRZ"];
+	const smartOptions = ["FSR"];
 	const AIOptions = ["ESRGAN", "SUPIR"];
 
 	function selectOption(option) {
@@ -134,6 +135,12 @@
 						<div class="option-group">
 							<span class="group-heading">-- Edge detection --</span>
 							{#each edgeDetectionOptions as option}
+								<div class="option" on:click={() => selectOption(option)}>{option}</div>
+							{/each}
+						</div>
+						<div class="option-group">
+							<span class="group-heading">-- Smart --</span>
+							{#each smartOptions as option}
 								<div class="option" on:click={() => selectOption(option)}>{option}</div>
 							{/each}
 						</div>
