@@ -179,6 +179,8 @@
 		min-height: 0;
 
 		--j: calc(100vh / 17);
+
+		border-radius: 1px;
 	}
 	@media only screen and (max-height: 1080px) {
 		*, :global(*), header, :global(header) {
@@ -335,6 +337,8 @@
 		display: flex;
 		justify-content: space-evenly;
 		align-items: center;
+
+		font-size: calc(var(--j) / 4);
     }
 	/* @media only screen and (max-height: 1000px) {
 		#controls {
@@ -493,7 +497,11 @@
 		}
 	}
 	.selected {
-		background-color: rgba(10, 20, 30, 0.5);
+		/* background-color: rgba(10, 20, 30, 0.5); */
+		background-color: rgb(52, 52, 60, 0.566);
+		border-bottom: 0;
+		border-left: 0;
+		/* border-left: 1px solid rgba(245, 245, 245, 0.1) */
 	}
 	/* #JM-RSmall {
 		right: 0;

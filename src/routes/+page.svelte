@@ -76,6 +76,7 @@
 <section>
 	<div class="center-on-site">
 		<form on:submit|preventDefault={handleSubmit}>
+
 			<!-- 
 				- preset
 				- scale
@@ -86,6 +87,7 @@
 					- box with filters and to choose list of algorithms
 				- scale button
 			-->
+
 			<div id="preset">
 				<label for="preset">Preset:</label>
 				<select id="preset" name="preset">
@@ -117,17 +119,10 @@
 			</div>
 
 			<div id="algorithm">
-				<div>
-					<label for="algorithm">Algorithm:</label>
-					<!-- <select id="algorithm" name="algorithm" bind:value={algorithm}>
-						<option value="none">None</option>
-						<option value="nearest-neighbor">Nearest Neighbor</option>
-						<option value="bilinear">Bilinear</option>
-						<option value="bicubic">Bicubic</option>
-						<option value="lanczos">Lanczos</option>
-					</select> -->
-					<input type="text" placeholder="Select algorithm" bind:value={algorithm} readonly />
-				</div>
+				<label for="algorithm">Algorithm:</label>
+				<input type="text" placeholder="Select algorithm" bind:value={algorithm} readonly />
+			
+				<div>Filters</div>
 				<div class="custom-dropdown">
 					<div class="dropdown-options">
 						<div class="option-group">
@@ -153,15 +148,6 @@
 			</div>
 
 			<button type="submit">Scale</button>
-
-			<!-- <label for="name">Name:</label>
-			<input type="text" id="name" name="name" required />
-
-			<label for="email">Email:</label>
-			<input type="email" id="email" name="email" required />
-
-			<label for="message">Message:</label>
-			<textarea id="message" name="message" required></textarea> -->
 		</form>
 	</div>
 </section>
@@ -187,6 +173,7 @@
 
 	.center-on-site {
 		width: calc(var(--j) * 14);
+		height: 100%;
 
 		display: flex;
 		flex-direction: column;
@@ -196,9 +183,13 @@
 		width: 100%;
 		height: 100%;
 
-		display: flex;
-		flex-direction: column;
+		box-sizing: border-box;
+		padding: calc(var(--j) / 16 + 2px);
+
+		/* display: flex; */
+		/* flex-direction: column;
 		flex-wrap: wrap;
+		align-items: start; */
 		/* justify-content: space-around; */
 		
 		/* grid-template-columns: repeat(2, 1fr); */
@@ -206,6 +197,10 @@
 		/* gap: 1em; */
 
 		color: var(--font-color-1);
+
+		background-color: rgb(52, 52, 60, 0.566);
+
+		overflow: scroll;
 	}
 	form * {
 		border-radius: 1px;
@@ -215,6 +210,9 @@
 		font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 		color: var(--font-color-1);
 		font-size: calc(var(--j) / 4.5);
+	}
+	form > * {
+		height: calc(var(--j) / 2.333);
 	}
 	form div {
 		display: flex;
@@ -243,9 +241,13 @@
 		justify-content: space-between;
 		align-items: center;
 
+		/* box-sizing: border-box; */
 		border: 1px solid var(--font-color-1);
 
 		transition: all 0.2s;
+	}
+	#scale-box:hover {
+		height: calc(var(--j) * 1.333);
 	}
 	#scale-box input {
 		width: calc(var(--j) / 1.5);
@@ -268,14 +270,20 @@
 		width: calc(var(--j) * 6);
 		max-height: calc(var(--j) * 4);
 
-		display: flex;
+		/* display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		align-items: center;
+		align-items: center; */
+		display: grid;
+		grid-template-columns: calc(var(--j) * 2.5) auto;
+		grid-template-rows: calc(var(--j) / 2.5) auto;
 
 		border: 1px solid var(--font-color-1);
 
 		transition: all 0.2s;
+	}
+	#algorithm:hover {
+		height: calc(var(--j) * 3.333);
 	}
 
 	.custom-dropdown {
@@ -293,8 +301,11 @@
 		left: 0;
 		z-index: 1000; */
 		background-color: #fff;
-		border: 1px solid #ccc;
-		border-top: none;
+
+		box-sizing: border-box;
+		/* border: 1px solid #ccc;
+		border-top: none; */
+
 		/* width: auto; */
 		width: 100%;
 
