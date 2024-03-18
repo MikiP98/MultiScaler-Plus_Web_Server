@@ -61,7 +61,7 @@
 
 	const classicOptions = ["Bilinear", "Bicubic", "Lanczos", "Nearest Neighbor"];
 	const edgeDetectionOptions = ["xBRZ"];
-	const smartOptions = ["FSR <sup>(GPU)<sup>"];
+	const smartOptions = ["FSR (GPU)"];
 	const AIOptions = ["ESRGAN", "SUPIR"];
 
 	function selectOption(option) {
