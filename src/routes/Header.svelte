@@ -230,6 +230,8 @@
 		font-size: calc(var(--j) / 2);
 		text-align: center;
 
+		padding-left: calc(var(--j) / 16);
+
 		filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.666));
 	}
 	.image-container-input, .image-container-output {
@@ -476,16 +478,20 @@
 		justify-content: center;
 		align-items: center;
 
+		--font-color-1: rgb(176, 176, 208);
 		font-family: 'Courier New', Courier, monospace;
 		/* font-weight: 600; */
-		color: var(--font-color-1);
+		/* color: var(--font-color-1); */
 		text-decoration: none;
+		text-shadow: 0.5px 0 var(--font-color-1), 0 0.5px var(--font-color-1), 0.5px 0.5px var(--font-color-1);
 		font-size: calc(var(--j)/1.666);
 
 		/* filter: drop-shadow(0 0 30px var(--font-color-1)); */
 	}
 	nav li a, :global(nav li a), nav span a, :global(nav span a) {
-		filter: drop-shadow(0 0 6px rgba(0, 0, 0, 1));
+		/* filter: drop-shadow(0 0 6px rgba(0, 0, 0, 1)); */
+		/* text-shadow: 1px 0 black, 0 1px black, 1px 1px black; */
+		/* text-shadow: 5px 0 var(--font-color-1), 0 5px var(--font-color-1), 5px 5px var(--font-color-1); */
 	}
 	/* a:link {
 		color: var(--font-color-1);
