@@ -24,10 +24,17 @@
 <style>
 	footer, :global(footer) {
 		height: var(--j);
+		width: calc(var(--j) * 14);
+		margin: 0 auto;
+
+		background-color: rgb(32, 32, 40, 0.75);
 
 		display: flex;
 		justify-content: center;
 		align-items: center;
+
+		box-sizing: border-box;
+		padding: calc(var(--j) / 16 + 2px);
 
 		color: var(--font-color-1);
 	}

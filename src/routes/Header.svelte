@@ -240,7 +240,9 @@
 
 		background-color: rgba(255, 255, 255, 0.1);
 
-        box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.25);
+		--shadow-size: calc(var(--j) / 10);
+		/* --shadow-size: 8px; */
+        box-shadow: 0 0 var(--shadow-size) var(--shadow-size) rgba(0, 0, 0, 0.25);
 		/* filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.25)); */
 
 		/* box-sizing: border-box;

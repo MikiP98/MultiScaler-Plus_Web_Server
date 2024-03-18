@@ -59,10 +59,72 @@
 		console.log(JSON.stringify(json))
 	}
 
-	const classicOptions = ["Bilinear", "Bicubic", "Lanczos", "Nearest Neighbor"];
-	const edgeDetectionOptions = ["xBRZ"];
-	const smartOptions = ["FSR (GPU)"];
-	const AIOptions = ["ESRGAN", "SUPIR"];
+	// /**
+	//  * @constructor Generates a constructor for a given data structure
+	//  * @param {string} keys separated by a comma + whitespace. struct('id, name, age')
+	//  * @returns {constructor} Constructor for the new struct
+	// */
+	// function makeStruct(keys) {
+	// 	if (!keys) return null;
+	// 	const k = keys.split(', ');
+	// 	const count = k.length;
+
+	// 	/** @constructor */
+	// 	function constructor() {
+	// 		for (let i = 0; i < count; i++) this[k[i]] = arguments[i];
+	// 	}
+	// 	return constructor;
+	// }
+
+	function optionStructConstructior(name, tags) {
+		this.name = name;
+		this.tags = tags;
+	}
+	const oSC = optionStructConstructior;
+	
+	const classicOptions = [
+		new oSC("Bilinear", []), 
+		new oSC("Bicubic", []), 
+		new oSC("Lanczos", []), 
+		new oSC("Nearest-neighbor", [])
+	];
+	const classicGroup = {
+		name: "Classic",
+		options: classicOptions
+	};
+
+	const edgeDetectionOptions = [
+		new oSC("xBRZ", [])
+	];
+	const edgeDetectionGroup = {
+		name: "Edge detection",
+		options: edgeDetectionOptions
+	};
+
+	const smartOptions = [
+		new oSC("FSR", ["GPU"]),
+		new oSC("CAS", ["GPU"])
+	];
+	const smartGroup = {
+		name: "Smart",
+		options: smartOptions
+	};
+
+	const AIOptions = [
+		new oSC("RealESRGAN", []),
+		new oSC("SUPIR", [])
+	];
+	const AIGroup = {
+		name: "AI",
+		options: AIOptions
+	};
+
+	const optionGroups = [
+		classicGroup,
+		edgeDetectionGroup,
+		smartGroup,
+		AIGroup
+	];
 
 	function selectOption(option) {
 		formData.algorithm = option;
@@ -123,33 +185,24 @@
 				<label for="algorithm">Algorithm:</label>
 				<input type="text" placeholder="Select algorithm" bind:value={formData.algorithm} readonly />
 			
-				<div>Filters</div>
+				<div class="filters">Filters</div>
 				<div class="custom-dropdown">
 					<div class="dropdown-options">
-						<div class="option-group">
-							<span class="group-heading">-- Classic --</span>
-							{#each classicOptions as option}
-								<div class="option" on:click={() => selectOption(option)}>{option}</div>
-							{/each}
-						</div>
-						<div class="option-group">
-							<span class="group-heading">-- Edge detection --</span>
-							{#each edgeDetectionOptions as option}
-								<div class="option" on:click={() => selectOption(option)}>{option}</div>
-							{/each}
-						</div>
-						<div class="option-group">
-							<span class="group-heading">-- Smart --</span>
-							{#each smartOptions as option}
-								<div class="option" on:click={() => selectOption(option)}>{option}</div>
-							{/each}
-						</div>
-						<div class="option-group">
-							<span class="group-heading">-- AI --</span>
-							{#each AIOptions as option}
-								<div class="option" on:click={() => selectOption(option)}>{option}</div>
-							{/each}
-						</div>
+						{#each optionGroups as optionGroup}
+							<div class="option-group">
+								<span class="group-heading">-- {optionGroup.name} --</span>
+								{#each optionGroup.options as option}
+									<button class="option" on:click={() => selectOption(option.name)}>
+										{option.name}
+										<sup>
+											{#each option.tags as tag}
+												({tag})
+											{/each}
+										</sup>
+									</button>
+								{/each}
+							</div>
+						{/each}
 					</div>
 				</div>
 			</div>
@@ -178,7 +231,7 @@
 	}
 	@media only screen and (max-height: 1080px) {
 		section {
-			height: calc(var(--j) * 3.3333);
+			height: calc(var(--j) * 3.6666);
 		}
 	}
 
@@ -222,6 +275,11 @@
 		color: var(--font-color-1);
 		font-size: calc(var(--j) / 4.5);
 	}
+	form sup {
+		/* margin-top: calc(var(--j) / 3); */
+		/* padding-top: calc(var(--j) / 3); */
+		font-size: calc(var(--j) / 7);
+	}
 	form > * {
 		height: calc(var(--j) / 2.333);
 	}
@@ -232,7 +290,7 @@
 	}
 
 	form input, form textarea {
-		background-color: rgb(79, 79, 89);
+		background-color: rgba(79, 79, 89, 0.9);
 		border: none;
 		/* border-radius: calc(var(--j) / 32); */
 		/* border-radius: 1px;
@@ -300,6 +358,9 @@
 	.custom-dropdown {
 		/* position: relative; */
 		display: none;
+		/* height: 100%; */
+		
+		overflow: scroll;
 	}
 	#algorithm:hover .custom-dropdown{
 		display: initial;
@@ -307,10 +368,8 @@
 	}
 
 	.dropdown-options {
-		/* position: absolute; */
-		/* top: 100%;
-		left: 0;
-		z-index: 1000; */
+		/* height: 100%; */
+
 		background-color: #fff;
 
 		box-sizing: border-box;
@@ -322,8 +381,6 @@
 
 		display: flex;
 		flex-direction: column;
-
-		overflow: scroll;
 	}
 
 	.option-group {
@@ -347,5 +404,17 @@
 
 	.option:hover {
 		background-color: #f0f0f0;
+	}
+
+	.filters {
+		/* position: relative; */
+		display: none;
+		/* height: 100%; */
+		
+		overflow: scroll;
+	}
+	#algorithm:hover .filters{
+		display: initial;
+		/* display: inline-block; */
 	}
 </style>
