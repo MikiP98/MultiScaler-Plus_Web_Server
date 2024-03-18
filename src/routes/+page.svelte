@@ -10,14 +10,14 @@
 	import { handleSubmitStore } from './store';
 	export let imgUrl;
 	let Result = null
-	let algorithm = ''
 	let formData = {
     	// your form data properties
 		scale: 2,
 		scaleX: 2,
 		scaleY: 2,
 		isScaleXYConnected: true,
-		algorithm: "none"
+		algorithm: '',
+		sharpness: 0.5
 	};
 
 	// export function handleSubmit(event) {
@@ -52,7 +52,7 @@
 			method: 'POST',
 			body: JSON.stringify({
 				// {imgUrl},
-				algorithm
+				// formData.algorithm
 			})
 		})
 		const json = await res.json()
@@ -61,11 +61,11 @@
 
 	const classicOptions = ["Bilinear", "Bicubic", "Lanczos", "Nearest Neighbor"];
 	const edgeDetectionOptions = ["xBRZ"];
-	const smartOptions = ["FSR"];
+	const smartOptions = ["FSR <sup>(GPU)<sup>"];
 	const AIOptions = ["ESRGAN", "SUPIR"];
 
 	function selectOption(option) {
-		algorithm = option;
+		formData.algorithm = option;
 	}
 </script>
 
@@ -121,7 +121,7 @@
 
 			<div id="algorithm">
 				<label for="algorithm">Algorithm:</label>
-				<input type="text" placeholder="Select algorithm" bind:value={algorithm} readonly />
+				<input type="text" placeholder="Select algorithm" bind:value={formData.algorithm} readonly />
 			
 				<div>Filters</div>
 				<div class="custom-dropdown">
@@ -152,6 +152,10 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div>
+				<label for="sharpness">Sharpness:</label>
+				<input type="number" step="0.01" id="sharpness" name="sharpness" bind:value={formData.sharpness}/>
 			</div>
 
 			<button type="submit">Scale</button>
