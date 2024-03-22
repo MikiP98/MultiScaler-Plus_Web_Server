@@ -64,7 +64,7 @@
 		formData.append('content', imageFile);
 
 		// const url = `http://localhost:8000/scale?factor=${formDataObject.scale}&algorithm=${formDataObject.algorithm}`;
-		const url = `http://172.31.111.107:8000/scale?factor=${formDataObject.scale}&algorithm=${formDataObject.algorithm}`;
+		const url = `http://172.31.111.107:1111/scale?factor=${formDataObject.scale}&algorithm=${formDataObject.algorithm}`;
 
 		fetch(url, {
 			method: 'POST',
