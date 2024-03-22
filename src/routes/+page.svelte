@@ -27,8 +27,8 @@
 		// // For example, you can send the form data to an API
 		// // or perform any other asynchronous operation.
 		console.log("Form submitted!", formData);
-
-		Post();
+		sendImageToAPI(imgUrl, formData);
+		// Post1();
 	}
 	onMount(() => {
 		handleSubmitStore.set(handleSubmit);
@@ -57,6 +57,37 @@
 		})
 		const json = await res.json()
 		console.log(JSON.stringify(json))
+	}
+
+	function sendImageToAPI(imageFile, formDataObject) {
+		const formData = new FormData();
+		formData.append('content', imageFile);
+
+		// const url = `http://localhost:8000/scale?factor=${formDataObject.scale}&algorithm=${formDataObject.algorithm}`;
+		const url = `http://172.31.111.107:8000/scale?factor=${formDataObject.scale}&algorithm=${formDataObject.algorithm}`;
+
+		fetch(url, {
+			method: 'POST',
+			body: formData
+		})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Failed to upload image');
+			}
+			return response.blob(); // Expecting image as response, so using blob()
+		})
+		.then(imageBlob => {
+			// Convert blob to URL
+			const imageUrl = URL.createObjectURL(imageBlob);
+			console.log('Scaled image URL:', imageUrl);
+
+			// Display the scaled image or handle it as needed
+			// Example: displayScaledImage(imageUrl);
+		})
+		.catch(error => {
+			console.error('Error uploading image:', error);
+			// Handle errors
+		});
 	}
 
 	// /**
