@@ -8,7 +8,12 @@
 	// import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
 	import { handleSubmitStore } from './store';
+	import { imageUrlStore } from './store';
+
 	export let imgUrl;
+	// export let imageFile;
+	let imageUrl;
+
 	let Result = null
 	let formData = {
     	// your form data properties
@@ -27,11 +32,21 @@
 		// // For example, you can send the form data to an API
 		// // or perform any other asynchronous operation.
 		console.log("Form submitted!", formData);
-		sendImageToAPI(imgUrl, formData);
+		console.log(imageUrl)
+		sendImageToAPI(imageUrl, formData);
 		// Post1();
 	}
 	onMount(() => {
 		handleSubmitStore.set(handleSubmit);
+
+		const unsubscribe = imageUrlStore.subscribe((value) => {
+			imageUrl = value;
+		});
+
+		// Cleanup the subscription when the component is destroyed
+		return () => {
+			unsubscribe();
+		};
 	});
 
 	function handleScaleXYChange(event) {
@@ -59,12 +74,43 @@
 		console.log(JSON.stringify(json))
 	}
 
+	// function sendImageToAPI(imageFile, formDataObject) {
+	// 	const formData = new FormData();
+	// 	formData.append('content', imageFile);
+	// 	formData.append('algorithm', formDataObject.algorithm);
+	// 	formData.append('factor', formDataObject.scale);
+
+	// 	const url = `http://127.0.0.1:8000/scale`;
+
+	// 	fetch(url, {
+	// 		method: 'POST',
+	// 		body: formData
+	// 	})
+	// 	.then(response => {
+	// 		if (!response.ok) {
+	// 			throw new Error('Failed to upload image');
+	// 		}
+	// 		return response.blob(); // Expecting image as response, so using blob()
+	// 	})
+	// 	.then(imageBlob => {
+	// 		// Convert blob to URL
+	// 		const imageUrl = URL.createObjectURL(imageBlob);
+	// 		console.log('Scaled image URL:', imageUrl);
+
+	// 		// Display the scaled image or handle it as needed
+	// 		// Example: displayScaledImage(imageUrl);
+	// 	})
+	// 	.catch(error => {
+	// 		console.error('Error uploading image:', error);
+	// 		// Handle errors
+	// 	});
+	// }
 	function sendImageToAPI(imageFile, formDataObject) {
 		const formData = new FormData();
 		formData.append('content', imageFile);
 
-		// const url = `http://localhost:8000/scale?factor=${formDataObject.scale}&algorithm=${formDataObject.algorithm}`;
-		const url = `http://172.31.111.107:1111/scale?factor=${formDataObject.scale}&algorithm=${formDataObject.algorithm}`;
+		const url = `http://127.0.0.1:8000/scale?factor=${formDataObject.scale}&algorithm=${formDataObject.algorithm}`;
+		// const url = `http://172.31.111.107:1111/scale?factor=${formDataObject.scale}&algorithm=${formDataObject.algorithm}`;
 
 		fetch(url, {
 			method: 'POST',
@@ -107,17 +153,18 @@
 	// 	return constructor;
 	// }
 
-	function optionStructConstructior(name, tags) {
+	function optionStructConstructior(name, tags, value=name) {
 		this.name = name;
 		this.tags = tags;
+		this.value = value;
 	}
 	const oSC = optionStructConstructior;
 	
 	const classicOptions = [
-		new oSC("Bilinear", []), 
-		new oSC("Bicubic", []), 
-		new oSC("Lanczos", []), 
-		new oSC("Nearest-neighbor", [])
+		new oSC("Bilinear", [], "CV2_Bilinear"), 
+		new oSC("Bicubic", [], "CV2_Bicubic"), 
+		new oSC("Lanczos", [], "CV2_Lanczos"), 
+		new oSC("Nearest-neighbor", [], "CV2_Nearest")
 	];
 	const classicGroup = {
 		name: "Classic",
@@ -164,7 +211,7 @@
 
 <svelte:head>
 	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<meta name="description" content="Scaling App" />
 </svelte:head>
 
 <section>
@@ -223,7 +270,7 @@
 							<div class="option-group">
 								<span class="group-heading">-- {optionGroup.name} --</span>
 								{#each optionGroup.options as option}
-									<button class="option" on:click={() => selectOption(option.name)}>
+									<button class="option" on:click={() => selectOption(option.value)}>
 										{option.name}
 										<sup>
 											{#each option.tags as tag}

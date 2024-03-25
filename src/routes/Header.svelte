@@ -10,7 +10,7 @@
 	// import page_scaling from './+page.svelte';
 	// import { getContext } from 'svelte';
 	import { onMount } from 'svelte';
-	import { handleSubmitStore } from './store';
+	import { handleSubmitStore, imageUrlStore } from './store';
 	import Page from './+page.svelte'
 	// let image = "https://www.w3schools.com/w3images/lights.jpg";
 
@@ -30,7 +30,8 @@
         reader.readAsDataURL(file);
     }
 
-    let imageUrl = "";
+    export let imageUrl = "";
+	// export let imageFile;
 	let imageOutputUrl = "";
 
     function onFileInputChange(event) {
@@ -40,6 +41,8 @@
 
 	let handleSubmit;
 	onMount(() => {
+		// imageUrlStore.set(imageUrl)
+
 		const unsubscribe = handleSubmitStore.subscribe((value) => {
 			handleSubmit = value;
 		});
@@ -51,6 +54,7 @@
 	});
 	function handleScaling(event) {
 		console.log("Scaling");
+		// console.log(imageFile)
 		
 		// Run function from +page.svelte
 		if (handleSubmit) {
