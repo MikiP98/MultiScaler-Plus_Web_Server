@@ -7,12 +7,12 @@
 	// import { setContext } from 'svelte';
 	// import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
-	import { handleSubmitStore } from './store';
-	import { imageUrlStore } from './store';
+	import { handleSubmitStore, fileStore, imageOutputUrlStore, imageIsChangingStore } from './store';
 
-	export let imgUrl;
-	// export let imageFile;
-	let imageUrl;
+	let imgUrl;
+
+	export let imageFile;
+	$: imageFile = $fileStore
 
 	let Result = null
 	let formData = {
@@ -26,27 +26,51 @@
 	};
 
 	// export function handleSubmit(event) {
-	export let handleSubmit = (event) => {
+	export let handleSubmit = async (event) => {
+		imageIsChangingStore.set(true);
+
 		// // Your form submission logic goes here
 
 		// // For example, you can send the form data to an API
 		// // or perform any other asynchronous operation.
 		console.log("Form submitted!", formData);
-		console.log(imageUrl)
-		sendImageToAPI(imageUrl, formData);
+		// console.log(imgFile)
+		// sendImageToAPI(file, formData);
+
+		
+		const formdataT = new FormData();
+        formdataT.append("content", imageFile);
+
+		const requestOptions = {
+			method: "POST",
+			body: formdataT,
+			redirect: "follow"
+		};
+		
+		const endpiont = `http://127.0.0.1:8000/scale`;
+		let response = await fetch(endpiont + "?algorithm=" + formData.algorithm + "&factor=" + formData.scale, requestOptions)
+            
+		if (!response.ok)  {
+			console.log("Response is NOT OK, status: ", response);
+			imageIsChangingStore.set(false);
+			return;
+		} else {
+			console.log("Response is OK");
+		}
+
+		let blob = await response.blob()
+		let url = URL.createObjectURL(blob, { type: "image/png" });
+		imageOutputUrlStore.set(url);
+		
+		// let im = document.createElement("img");
+		// im.setAttribute("src", url);
+		// document.getElementsByTagName("body")[0].append(im);
+			
 		// Post1();
+		imageIsChangingStore.set(false);
 	}
 	onMount(() => {
 		handleSubmitStore.set(handleSubmit);
-
-		const unsubscribe = imageUrlStore.subscribe((value) => {
-			imageUrl = value;
-		});
-
-		// Cleanup the subscription when the component is destroyed
-		return () => {
-			unsubscribe();
-		};
 	});
 
 	function handleScaleXYChange(event) {
@@ -189,7 +213,7 @@
 	};
 
 	const AIOptions = [
-		new oSC("RealESRGAN", []),
+		new oSC("RealESRGAN", [], "real_esrgan"),
 		new oSC("SUPIR", [])
 	];
 	const AIGroup = {

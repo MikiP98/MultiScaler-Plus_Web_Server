@@ -10,29 +10,34 @@
 	// import page_scaling from './+page.svelte';
 	// import { getContext } from 'svelte';
 	import { onMount } from 'svelte';
-	import { handleSubmitStore, imageUrlStore } from './store';
+	import { handleSubmitStore, fileStore, imageOutputUrlStore, imageIsChangingStore } from './store';
 	import Page from './+page.svelte'
 	// let image = "https://www.w3schools.com/w3images/lights.jpg";
 
     function handleFileSelect(evt) {
         const files = evt.target.files;
         const file = files[0];
+		fileStore.set(file);
 
         const reader = new FileReader();
 
         reader.onload = (function (theFile) {
         return function (e) {
-            $: imageUrl = e.target.result;
-			console.log(imageUrl);
+            imageUrl = e.target?.result;
+			// console.log(imageUrl);
         };
         })(file);
 
         reader.readAsDataURL(file);
     }
 
-    export let imageUrl = "";
-	// export let imageFile;
-	let imageOutputUrl = "";
+    let imageUrl;
+	export let imageFile;
+	export let imageOutputUrl;
+	$: imageOutputUrl = $imageOutputUrlStore;
+	export let imageIsChanging;
+	$: imageIsChanging = $imageIsChangingStore;
+	imageIsChangingStore.set(false);
 
     function onFileInputChange(event) {
 		console.log("File input changed");
@@ -41,8 +46,6 @@
 
 	let handleSubmit;
 	onMount(() => {
-		// imageUrlStore.set(imageUrl)
-
 		const unsubscribe = handleSubmitStore.subscribe((value) => {
 			handleSubmit = value;
 		});
@@ -67,10 +70,10 @@
 	function handleOutputToInput(event) {
 		console.log("Output to input");
 	}
-	const fetchImage = (async () => {
-		const response = await fetch('scaled image url')
-    return await response.json()
-	})
+	// const fetchImage = (async () => {
+	// 	const response = await fetch('scaled image url')
+    // return await response.json()
+	// })
 </script>
 
 <header>
@@ -119,7 +122,7 @@
 				<div class="background-image-bloom">
 					<div class="blur">
 						<div class="visible-image">
-							{#if !imageOutputUrl}
+							{#if imageIsChanging}
 								<img src={loading} alt="loading circle" id="loading-circle">
 							{/if}
 							{#if imageOutputUrl}
@@ -309,8 +312,8 @@
 		}
 	}
 	.visible-image {
-		/* position: relative;
-		top: calc(var(--j) * -5); */
+		position: relative;
+		/* top: calc(var(--j) * -5); */
 
 		display: flex;
 		justify-content: center;
@@ -322,6 +325,13 @@
 		overflow: scroll;
 
 		filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.666));
+	}
+	.visible-image > * {
+		position: absolute;
+	}
+	#loading-circle {
+		z-index: 1;
+		/* box-shadow: 0 0 32 32 rgba(0, 0, 0, 0.333); */
 	}
     /* .blur img {
         --gradient-um: linear-gradient(black, black);

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="scaleForm">
+        <input type="file" accept=".png" id="fileInput"/> <br><br>
+        <input type="submit" value="scale"/>
+    </form>
+
+
+    <script>
+        let scaleForm = document.getElementById("scaleForm");
+        let fileInput = document.getElementById("fileInput");
+
+        scaleForm.onsubmit = sendRequest;
+
+        async function sendRequest(e){
+            e.preventDefault();
+
+            const formdata = new FormData();
+            formdata.append("content", fileInput.files[0]);
+
+            const requestOptions = {
+                method: "POST",
+                body: formdata,
+                redirect: "follow"
+            };
+
+            let response = await fetch("http://localhost:8000/scale?algorithm=xbrz&factor=4", requestOptions)
+            
+            if(!response.ok) return;
+
+            let blob = await response.blob()
+            let url = URL.createObjectURL(blob, { type: "image/png" });
+            
+            let im = document.createElement("img");
+            im.setAttribute("src", url);
+            document.getElementsByTagName("body")[0].append(im);
+        }
+    </script>
+</body>
+</html>
