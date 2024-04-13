@@ -10,7 +10,7 @@
 	// import page_scaling from './+page.svelte';
 	// import { getContext } from 'svelte';
 	import { onMount } from 'svelte';
-	import { handleSubmitStore, fileStore, imageOutputUrlStore, imageIsChangingStore } from './store';
+	import { handleSubmitStore, fileStore, imageOutputUrlStore, imageOutputFileStore, imageIsChangingStore } from './store';
 	import Page from './+page.svelte'
 	// let image = "https://www.w3schools.com/w3images/lights.jpg";
 
@@ -33,8 +33,13 @@
 
     let imageUrl;
 	export let imageFile;
+
 	export let imageOutputUrl;
 	$: imageOutputUrl = $imageOutputUrlStore;
+
+	export let imageOutputFile;
+	$: imageOutputFile = $imageOutputFileStore;
+
 	export let imageIsChanging;
 	$: imageIsChanging = $imageIsChangingStore;
 	imageIsChangingStore.set(false);
@@ -70,10 +75,12 @@
 	function handleOutputToInput(event) {
 		console.log("Output to input");
 	}
-	// const fetchImage = (async () => {
-	// 	const response = await fetch('scaled image url')
-    // return await response.json()
-	// })
+	
+	function handleImageDownload(event) {
+		console.log("Image download");
+		// Download imageOutputFile
+		// const url = URL.createObjectURL(imageOutputFile);
+	}
 </script>
 
 <header>
@@ -139,7 +146,7 @@
 								<button>-</button>
 							</span>
 							<span>
-								<button>↓</button>
+								<a on:click={handleImageDownload} href={imageOutputUrl} target="_blank">↓</a>
 							</span>
 						</div>
 					</div>

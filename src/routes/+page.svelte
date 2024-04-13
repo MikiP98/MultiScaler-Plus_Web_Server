@@ -7,7 +7,7 @@
 	// import { setContext } from 'svelte';
 	// import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
-	import { handleSubmitStore, fileStore, imageOutputUrlStore, imageIsChangingStore } from './store';
+	import { handleSubmitStore, fileStore, imageOutputUrlStore, imageOutputFileStore, imageIsChangingStore } from './store';
 
 	let imgUrl;
 
@@ -62,11 +62,10 @@
 		let url = URL.createObjectURL(blob, { type: "image/png" });
 		imageOutputUrlStore.set(url);
 		
-		// let im = document.createElement("img");
-		// im.setAttribute("src", url);
-		// document.getElementsByTagName("body")[0].append(im);
-			
-		// Post1();
+		let new_name = formData.algorithm + '_' + imageFile.name + '_' + formData.scale + '.png';
+		let file = new File([blob], "scaled_image.png", { type: "image/png" });
+		imageOutputFileStore.set(file);
+
 		imageIsChangingStore.set(false);
 	}
 	onMount(() => {
@@ -85,79 +84,6 @@
 			console.log("Same scale");
 			formData.scale = formData.scaleX;
 		}
-	}
-	async function Post(){
-		const res = await fetch('do wstawienia',{
-			method: 'POST',
-			body: JSON.stringify({
-				// {imgUrl},
-				// formData.algorithm
-			})
-		})
-		const json = await res.json()
-		console.log(JSON.stringify(json))
-	}
-
-	// function sendImageToAPI(imageFile, formDataObject) {
-	// 	const formData = new FormData();
-	// 	formData.append('content', imageFile);
-	// 	formData.append('algorithm', formDataObject.algorithm);
-	// 	formData.append('factor', formDataObject.scale);
-
-	// 	const url = `http://127.0.0.1:8000/scale`;
-
-	// 	fetch(url, {
-	// 		method: 'POST',
-	// 		body: formData
-	// 	})
-	// 	.then(response => {
-	// 		if (!response.ok) {
-	// 			throw new Error('Failed to upload image');
-	// 		}
-	// 		return response.blob(); // Expecting image as response, so using blob()
-	// 	})
-	// 	.then(imageBlob => {
-	// 		// Convert blob to URL
-	// 		const imageUrl = URL.createObjectURL(imageBlob);
-	// 		console.log('Scaled image URL:', imageUrl);
-
-	// 		// Display the scaled image or handle it as needed
-	// 		// Example: displayScaledImage(imageUrl);
-	// 	})
-	// 	.catch(error => {
-	// 		console.error('Error uploading image:', error);
-	// 		// Handle errors
-	// 	});
-	// }
-	function sendImageToAPI(imageFile, formDataObject) {
-		const formData = new FormData();
-		formData.append('content', imageFile);
-
-		const url = `http://127.0.0.1:8000/scale?factor=${formDataObject.scale}&algorithm=${formDataObject.algorithm}`;
-		// const url = `http://172.31.111.107:1111/scale?factor=${formDataObject.scale}&algorithm=${formDataObject.algorithm}`;
-
-		fetch(url, {
-			method: 'POST',
-			body: formData
-		})
-		.then(response => {
-			if (!response.ok) {
-				throw new Error('Failed to upload image');
-			}
-			return response.blob(); // Expecting image as response, so using blob()
-		})
-		.then(imageBlob => {
-			// Convert blob to URL
-			const imageUrl = URL.createObjectURL(imageBlob);
-			console.log('Scaled image URL:', imageUrl);
-
-			// Display the scaled image or handle it as needed
-			// Example: displayScaledImage(imageUrl);
-		})
-		.catch(error => {
-			console.error('Error uploading image:', error);
-			// Handle errors
-		});
 	}
 
 	// /**
@@ -266,19 +192,19 @@
 			<div id="scale-box">
 				<label for="scale">Scale:</label>
 
-				<input type="number" id="scale" name="scale" min="0" bind:value={formData.scale} required />
+				<input type="number" id="scale" name="scale" min="0" step="0.001" bind:value={formData.scale} required />
 
 				<div id="scale-split">
 					<span>
 						<label for="scale-x">X:</label>
-						<input type="number" id="scale-x" name="scale-x" min="0" bind:value={formData.scaleX} on:change={handleScaleXYChange} required />
+						<input type="number" id="scale-x" name="scale-x" min="0" step="0.001" bind:value={formData.scaleX} on:change={handleScaleXYChange} required />
 					</span>
 
 					<input type="checkbox" id="scale-x-y-connect" name="scale-x-y-connect" bind:checked={formData.isScaleXYConnected} />
 
 					<span>
 						<label for="scale-y">Y:</label>
-						<input type="number" id="scale-y" name="scale-y" min="0" bind:value={formData.scaleY} on:change={handleScaleXYChange} required />
+						<input type="number" id="scale-y" name="scale-y" min="0" step="0.001" bind:value={formData.scaleY} on:change={handleScaleXYChange} required />
 					</span>
 				</div>
 			</div>
@@ -366,7 +292,7 @@
 
 		background-color: rgb(52, 52, 60, 0.566);
 
-		overflow: scroll;
+		overflow: auto;
 	}
 	form * {
 		border-radius: 1px;
@@ -462,7 +388,7 @@
 		display: none;
 		/* height: 100%; */
 		
-		overflow: scroll;
+		overflow: auto;
 	}
 	#algorithm:hover .custom-dropdown{
 		display: initial;
@@ -492,7 +418,7 @@
 		display: flex;
 		flex-direction: column;
 
-		overflow: scroll;
+		overflow: auto;
 	}
 
 	.group-heading {
@@ -513,7 +439,7 @@
 		display: none;
 		/* height: 100%; */
 		
-		overflow: scroll;
+		overflow: auto;
 	}
 	#algorithm:hover .filters{
 		display: initial;
