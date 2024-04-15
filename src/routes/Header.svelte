@@ -25,6 +25,8 @@
         return function (e) {
             imageUrl = e.target?.result;
 			// console.log(imageUrl);
+
+			getImageSize();
         };
         })(file);
 
@@ -81,6 +83,153 @@
 		// Download imageOutputFile
 		// const url = URL.createObjectURL(imageOutputFile);
 	}
+
+	let inputImageWidth = 200;
+	let inputImageHeight = 200;
+	let inputImageDisplayWidth = 200;
+	let inputImageDisplayHeight = 200;
+	let inputImageAspectRatio = 1;
+	let inputImageScale = 100;
+
+	function getImageSize() {
+		const img = new Image();
+		img.src = imageUrl;
+
+		img.onload = function() {
+			inputImageWidth = img.width;
+			inputImageHeight = img.height;
+			inputImageDisplayWidth = img.width;
+			inputImageDisplayHeight = img.height;
+			inputImageAspectRatio = img.width / img.height;
+
+			console.log("Input image width: " + inputImageWidth);
+			console.log("Input image height: " + inputImageHeight);
+
+			hendleInputImageSizing();
+		};
+	}
+
+	function hendleInputImageSizing() {
+		let conteinerWidth = document.querySelector(".image-container-input")?.clientWidth;
+		let conteinerHeight = document.querySelector(".image-container-input")?.clientHeight;
+
+		if (inputImageDisplayHeight <= conteinerHeight && inputImageDisplayWidth <= conteinerWidth) {
+			if (inputImageWidth < 0.5 * conteinerWidth && inputImageHeight < 0.5 * conteinerHeight) {
+				if (inputImageAspectRatio > 1) {
+					inputImageDisplayWidth = conteinerWidth / 3 * 2;
+					inputImageDisplayHeight = inputImageHeight * (inputImageDisplayWidth / inputImageWidth);
+					
+					inputImageScale = Math.round(inputImageDisplayWidth / inputImageWidth * 100);
+				} else {
+					inputImageDisplayHeight = conteinerHeight / 3 * 2;
+					inputImageDisplayWidth = inputImageWidth * (inputImageDisplayHeight / inputImageHeight);
+
+					inputImageScale = Math.round(inputImageDisplayHeight / inputImageHeight * 100);
+				}
+			} else {
+				// Image fits and isn't too small, keep it as is
+			}
+		}
+		else {
+			if (inputImageAspectRatio > 1) {
+				inputImageDisplayWidth = conteinerWidth / 3 * 2;
+				inputImageDisplayHeight = inputImageHeight * (inputImageDisplayWidth / inputImageWidth);
+				
+				inputImageScale = Math.round(inputImageDisplayWidth / inputImageWidth * 100);
+			} else {
+				inputImageDisplayHeight = conteinerHeight / 3 * 2;
+				inputImageDisplayWidth = inputImageWidth * (inputImageDisplayHeight / inputImageHeight);
+
+				inputImageScale = Math.round(inputImageDisplayHeight / inputImageHeight * 100);
+			}
+		}
+	}
+
+	function handleInputImageUpSizing() {
+		inputImageDisplayWidth = inputImageDisplayWidth * 1.1;
+		inputImageDisplayHeight = inputImageDisplayHeight * 1.1;
+		inputImageScale = Math.round(inputImageDisplayWidth / inputImageWidth * 100);
+	}
+
+	function handleInputImageDownSizing() {
+		inputImageDisplayWidth = inputImageDisplayWidth * 0.9;
+		inputImageDisplayHeight = inputImageDisplayHeight * 0.9;
+		inputImageScale = Math.round(inputImageDisplayWidth / inputImageWidth * 100);
+	}
+
+
+	let outputImageWidth = 200;
+	let outputImageHeight = 200;
+	let outputImageDisplayWidth = 200;
+	let outputImageDisplayHeight = 200;
+	let outputImageAspectRatio = 1;
+	let outputImageScale = 100;
+	
+	function getOutputImageSize() {
+		const img = new Image();
+		img.src = imageOutputUrl;
+
+		img.onload = function() {
+			outputImageWidth = img.width;
+			outputImageHeight = img.height;
+			outputImageDisplayWidth = img.width;
+			outputImageDisplayHeight = img.height;
+			outputImageAspectRatio = img.width / img.height;
+
+			console.log("Output image width: " + outputImageWidth);
+			console.log("Output image height: " + outputImageWidth);
+
+			hendleOutputImageSizing();
+		};
+	}
+
+	function hendleOutputImageSizing() {
+		let conteinerWidth = document.querySelector(".image-container-output")?.clientWidth;
+		let conteinerHeight = document.querySelector(".image-container-output")?.clientHeight;
+
+		if (outputImageDisplayHeight <= conteinerHeight && outputImageDisplayWidth <= conteinerWidth) {
+			if (outputImageWidth < 0.5 * conteinerWidth && outputImageHeight < 0.5 * conteinerHeight) {
+				if (outputImageAspectRatio > 1) {
+					outputImageDisplayWidth = conteinerWidth / 3 * 2;
+					outputImageDisplayHeight = outputImageHeight * (outputImageDisplayWidth / outputImageWidth);
+					
+					outputImageScale = Math.round(outputImageDisplayWidth / outputImageWidth * 100);
+				} else {
+					outputImageDisplayHeight = conteinerHeight / 3 * 2;
+					outputImageDisplayWidth = outputImageWidth * (outputImageDisplayHeight / outputImageHeight);
+
+					outputImageScale = Math.round(outputImageDisplayHeight / outputImageHeight * 100);
+				}
+			} else {
+				// Image fits and isn't too small, keep it as is
+			}
+		}
+		else {
+			if (outputImageAspectRatio > 1) {
+				outputImageDisplayWidth = conteinerWidth / 3 * 2;
+				outputImageDisplayHeight = outputImageHeight * (outputImageDisplayWidth / outputImageWidth);
+				
+				outputImageScale = Math.round(outputImageDisplayWidth / outputImageWidth * 100);
+			} else {
+				outputImageDisplayHeight = conteinerHeight / 3 * 2;
+				outputImageDisplayWidth = outputImageWidth * (outputImageDisplayHeight / outputImageHeight);
+
+				outputImageScale = Math.round(outputImageDisplayHeight / outputImageHeight * 100);
+			}
+		}
+	}
+
+	function handleOutputImageUpSizing() {
+		outputImageDisplayWidth = outputImageDisplayWidth * 1.1;
+		outputImageDisplayHeight = outputImageDisplayHeight * 1.1;
+		outputImageScale = Math.round(outputImageDisplayWidth / outputImageWidth * 100);
+	}
+
+	function handleOutputImageDownSizing() {
+		outputImageDisplayWidth = outputImageDisplayWidth * 0.9;
+		outputImageDisplayHeight = outputImageDisplayHeight * 0.9;
+		outputImageScale = Math.round(outputImageDisplayWidth / outputImageWidth * 100);
+	}
 </script>
 
 <header>
@@ -97,17 +246,17 @@
 								<input type="file" id="file" accept="image/*" on:change="{onFileInputChange}" />
 							{/if}
 							{#if imageUrl}
-								<img src="{imageUrl}" alt="Selected Image" width="200px" />
+								<img src="{imageUrl}" alt="Selected Image" width="{ inputImageDisplayWidth }px" height="{inputImageDisplayHeight}px" />
 							{/if}
 						</div>
 						
 						<div id="controls">
 							<span>
-								XXX%
+								{inputImageScale}% {inputImageWidth}x{inputImageHeight}
 							</span>
 							<span>
-								<button>+</button>
-								<button>-</button>
+								<button on:click={handleInputImageUpSizing}>+</button>
+								<button on:click={handleInputImageDownSizing}>-</button>
 							</span>
 							<span>
 								<input id="preview-mode" name="preview-mode" type="checkbox">
@@ -133,17 +282,17 @@
 								<img src={loading} alt="loading circle" id="loading-circle">
 							{/if}
 							{#if imageOutputUrl}
-								<img src={imageOutputUrl} alt="Selected Image" width="200px" />
+								<img src={imageOutputUrl} alt="Selected Image" width="{ outputImageWidth }px" />
 							{/if}
 						</div>
 						
 						<div id="controls">
 							<span>
-								XXX%
+								{outputImageScale}% {outputImageWidth}x{outputImageHeight}
 							</span>
 							<span>
-								<button>+</button>
-								<button>-</button>
+								<button on:click={handleOutputImageUpSizing}>+</button>
+								<button on:click={handleOutputImageDownSizing}>-</button>
 							</span>
 							<span>
 								<a on:click={handleImageDownload} href={imageOutputUrl} target="_blank">↓</a>
@@ -194,7 +343,7 @@
 
 		--j: calc(100vh / 17);
 
-		border-radius: 1px;
+		/* border-radius: 1px; */
 	}
 	@media only screen and (max-height: 1080px) {
 		*, :global(*), header, :global(header) {
@@ -209,7 +358,8 @@
 	}
 
 	.center-on-site {
-		width: calc(var(--j) * 14);
+		/* width: calc(var(--j) * 14); */
+		width: calc(var(--j) * 18);
 		/* margin: 0 auto; */
 	}
 
@@ -221,9 +371,14 @@
 		justify-content: space-between;
 		align-content: center; */
 
+		width: 100%;
+		/* height: calc(var(--j) * 9); */
+		aspect-ratio: 2 / 1;
+		height: auto;
+
 		display: grid;
-		grid-template-columns: var(--j) calc(var(--j) * 5) calc(var(--j) * 2) calc(var(--j) * 5) var(--j);
-		grid-template-rows: var(--j) calc(var(--j) * 5) var(--j);
+		grid-template-columns: var(--j) auto calc(var(--j) * 2) auto var(--j);
+		grid-template-rows: var(--j) auto var(--j);
 
 		box-shadow: inset 0 0 16px 16px rgba(0, 0, 0, 0.333);
 
@@ -279,8 +434,8 @@
 	}
 
     .background-image-bloom {
-        width: calc(var(--j) * 5);
-		height: calc(var(--j) * 5);
+        width: 100%;
+		height: 100%;
 		/* height: calc(var(--j) * 4); */
 
         background-image: var(--css-image);
@@ -303,7 +458,7 @@
 		height: calc(var(--j) * 5); */
 		/* height: calc(var(--j) * 4); */
 
-        backdrop-filter: blur(48px);
+        backdrop-filter: blur(calc(var(--j) / 1.5)) saturate(1.333) brightness(1.333);
         background: rgb(0,0,0);
         background: radial-gradient(circle, rgba(0,20,40,0.5) 0%, rgba(0,20,40,1) 100%);
 

@@ -47,7 +47,9 @@
 			redirect: "follow"
 		};
 		
-		const endpiont = `http://127.0.0.1:8000/scale`;
+		const ip = window.location.hostname;
+		const endpiont = `http://` + ip + `:8000/scale`;
+		console.log("IP: ", ip);
 		let response = await fetch(endpiont + "?algorithm=" + formData.algorithm + "&factor=" + formData.scale, requestOptions)
             
 		if (!response.ok)  {
@@ -264,7 +266,7 @@
 	}
 
 	.center-on-site {
-		width: calc(var(--j) * 14);
+		width: calc(var(--j) * 18);
 		height: 100%;
 
 		display: flex;
