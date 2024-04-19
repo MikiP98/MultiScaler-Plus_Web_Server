@@ -106,6 +106,12 @@
 			console.log("Input image height: " + inputImageHeight);
 
 			hendleInputImageSizing();
+
+			// Temporal, delete after proper implementation!
+			outputImageWidth = inputImageWidth;
+			outputImageHeight = inputImageHeight;
+			outputImageDisplayWidth = inputImageDisplayWidth;
+			outputImageDisplayHeight = inputImageDisplayHeight;
 		};
 	}
 
@@ -282,7 +288,7 @@
 								<img src={loading} alt="loading circle" id="loading-circle">
 							{/if}
 							{#if imageOutputUrl}
-								<img src={imageOutputUrl} alt="Selected Image" width="{ outputImageWidth }px" />
+								<img src={imageOutputUrl} alt="Selected Image" width="{ outputImageDisplayWidth }px" height="{ outputImageDisplayHeight }px" />
 							{/if}
 						</div>
 						
@@ -487,12 +493,15 @@
 		overflow: scroll;
 
 		filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.666));
+		image-rendering: pixelated;
 	}
 	.visible-image > * {
 		position: absolute;
 	}
 	#loading-circle {
 		z-index: 1;
+		image-rendering: auto;
+		image-rendering: high-quality;
 		/* box-shadow: 0 0 32 32 rgba(0, 0, 0, 0.333); */
 	}
     /* .blur img {
